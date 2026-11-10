@@ -52,9 +52,10 @@ android {
             // Producción: API publicada en internet (HTTPS)
             buildConfigField("String", "API_BASE_URL", "\"$apiProduccion\"")
             if (firma.isNotEmpty()) signingConfig = signingConfigs.getByName("produccion")
+            // R8 desactivado: con la optimización de androidx/kotlin el APK se cerraba al abrir
+            // en Android 12 (IllegalAccessError en InitializationProvider).
             optimization {
-                enable = true
-                packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
+                enable = false
             }
         }
     }
