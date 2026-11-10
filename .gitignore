@@ -1,0 +1,8 @@
+# Cada proyecto tiene su propio .gitignore (CarenciaApi/*, CarenciaApp/)
+# Generales
+.DS_Store
+Thumbs.db
+.vs/
+.idea/
+*.log
+secrets.json
