@@ -54,6 +54,13 @@ builder.Services.AddSwaggerGen(c =>
     if (File.Exists(xml)) c.IncludeXmlComments(xml);
 });
 
+// ---------- Cadena de conexión (User Secrets / variable ConnectionStrings__DefaultConnection) ----------
+if (string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("DefaultConnection")))
+    throw new InvalidOperationException(
+        "Falta la cadena de conexión. En la carpeta del proyecto ejecuta: " +
+        "dotnet user-secrets set \"ConnectionStrings:DefaultConnection\" " +
+        "\"Server=TU_INSTANCIA_SQL;Database=CarenciaDB;Trusted_Connection=True;TrustServerCertificate=True;\"");
+
 // ---------- Autenticación JWT + roles ----------
 var jwt = builder.Configuration.GetSection("Jwt");
 // La clave NO está en appsettings.json (se sube a Git). Se lee de User Secrets en desarrollo
