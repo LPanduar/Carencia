@@ -29,18 +29,20 @@ Crea la base `CarenciaDB` con los datos iniciales y el usuario administrador `ad
 (la contraseña inicial se comparte por privado dentro del equipo).
 
 ### 2. API
-La clave del JWT **no está en el repositorio**. Configúrala una sola vez con User Secrets:
+La **cadena de conexión** y la **clave del JWT** no están en el repositorio.
+Configúralas una sola vez con User Secrets (reemplaza `TU_INSTANCIA_SQL` por el nombre de tu instancia de SQL Server):
 
 ```bash
 cd CarenciaApi/CarenciaAPi
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=TU_INSTANCIA_SQL;Database=CarenciaDB;Trusted_Connection=True;TrustServerCertificate=True;"
 dotnet user-secrets set "Jwt:Key" "una-clave-larga-y-aleatoria-de-al-menos-32-caracteres"
 dotnet run --launch-profile http
 ```
 
-Swagger: <http://localhost:5101/swagger>
-(en producción la clave va en la variable de entorno `Jwt__Key`).
+En Visual Studio también puedes hacerlo con clic derecho al proyecto → **Administrar secretos de usuario**.
 
-Si tu instancia de SQL Server no es `TU_INSTANCIA_SQL`, cambia `ConnectionStrings:DefaultConnection`.
+Swagger: <http://localhost:5101/swagger>
+(en producción van en las variables de entorno `ConnectionStrings__DefaultConnection` y `Jwt__Key`).
 
 ### 3. App Android
 Abre `CarenciaApp` en Android Studio y ejecuta.
