@@ -8,6 +8,7 @@ namespace CarenciaAPi.Services.Interfaces
     {
         Task<Response<Usuario>> CrearAdmin(RegistroDto request);
         Task<Response<LoginResponseDto>> LoginAdmin(LoginDto request);
+        Task<Response<bool>> CambiarContrasena(int id, CambiarContrasenaDto request);
         Task<Response<List<Usuario>>> Obtener();
         Task<Response<Usuario>> ById(int id);
         Task<Response<Usuario>> Actualizar(int id, UsuarioUpdateDto request);

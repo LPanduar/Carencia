@@ -188,8 +188,15 @@ fun AdminPanelScreen(
     onEditar: (Int) -> Unit,
     onVer: (Int) -> Unit,
     onSalir: () -> Unit,
+    onContrasena: () -> Unit,
+    avisoExterno: String? = null,
+    onAvisoMostrado: () -> Unit = {},
     vm: AdminPanelViewModel = viewModel()
 ) {
+    // Mensaje que manda otra pantalla al regresar (ej. "Contraseña actualizada")
+    LaunchedEffect(avisoExterno) {
+        if (avisoExterno != null) { vm.aviso = avisoExterno; onAvisoMostrado() }
+    }
     val app = CarenciaApp.instancia
     val sesion by app.sesion.sesion.collectAsState(initial = null)
     val scope = rememberCoroutineScope()
@@ -213,6 +220,8 @@ fun AdminPanelScreen(
                 Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Volver(onVolver)
                     Spacer(Modifier.weight(1f))
+                    BotonCircular(R.drawable.ic_editar, "Cambiar contraseña", onContrasena)
+                    Spacer(Modifier.width(10.dp))
                     BotonCircular(R.drawable.ic_salir, "Cerrar sesión", {
                         scope.launch { app.repo.cerrarSesion(); onSalir() }
                     })

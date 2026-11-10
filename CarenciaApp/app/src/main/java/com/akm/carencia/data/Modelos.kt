@@ -91,6 +91,7 @@ data class Estadistica(
 
 // ---------- Cuerpos de petición ----------
 data class LoginRequest(val userName: String, val password: String)
+data class CambiarContrasenaRequest(val actual: String, val nueva: String)
 
 data class NovedadUpdateRequest(
     val titulo: String,

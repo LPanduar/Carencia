@@ -26,6 +26,12 @@ namespace CarenciaAPi.Controllers
         public async Task<IActionResult> Yo() =>
             Ok(await _usuarioService.ById(User.GetUserId()));
 
+        /// <summary>El administrador de la sesión cambia su propia contraseña (mínimo 8 caracteres).</summary>
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPut("contrasena")]
+        public async Task<IActionResult> CambiarContrasena([FromBody] CambiarContrasenaDto request) =>
+            Ok(await _usuarioService.CambiarContrasena(User.GetUserId(), request));
+
         /// <summary>Lista de administradores.</summary>
         [Authorize(Roles = Roles.Admin)]
         [HttpGet]

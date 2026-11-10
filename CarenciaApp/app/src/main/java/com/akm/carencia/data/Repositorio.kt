@@ -57,6 +57,10 @@ class Repositorio(private val sesion: SesionManager) {
 
     suspend fun cerrarSesion() = sesion.cerrar()
 
+    // PUT api/Usuario/contrasena (admin de la sesión)
+    suspend fun cambiarContrasena(actual: String, nueva: String) =
+        llamar { api.cambiarContrasena(CambiarContrasenaRequest(actual, nueva)) }
+
     // ----- Niveles -----
     suspend fun niveles() = llamar { api.niveles() }
     suspend fun nivel(id: Int) = llamar { api.nivel(id) }
