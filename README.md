@@ -6,7 +6,7 @@ App móvil del videojuego **Carencia**: un joven de 17 años busca a su hermana,
 |---|---|
 | `CarenciaApi/CarenciaAPi` | API REST en ASP.NET (.NET 10) con **Dapper**, **Swagger**, JWT y SQL Server |
 | `CarenciaApi/Domain` | Biblioteca de clases: entidades, DTOs y `Response<T>` |
-| `CarenciaApi/CarenciaAPi/Database` | Script `CarenciaDB.sql` (tablas, procedimientos almacenados y datos) |
+| `CarenciaApi/CarenciaAPi/Database` | Scripts SQL de la base (**no están en el repositorio**; se comparten por privado dentro del equipo) |
 | `CarenciaApp` | App Android en **Kotlin + Jetpack Compose** (diseño del Figma oficial) |
 
 ## Funcionalidades
@@ -24,6 +24,9 @@ App móvil del videojuego **Carencia**: un joven de 17 años busca a su hermana,
 ## Cómo correrlo
 
 ### 1. Base de datos
+Los scripts SQL **no se suben al repositorio**. Pídelos al equipo y cópialos en
+`CarenciaApi/CarenciaAPi/Database/` (la carpeta está en `.gitignore`).
+
 En SQL Server (SSMS → F5):
 1. `CarenciaApi/CarenciaAPi/Database/00_CrearBaseLocal.sql` → crea la base `CarenciaDB`.
 2. `CarenciaApi/CarenciaAPi/Database/CarenciaDB.sql` **dentro de `CarenciaDB`** → tablas, datos iniciales

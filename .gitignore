@@ -15,3 +15,6 @@ keystore.properties
 *.pubxml
 *.pubxml.user
 appsettings.Production.json
+
+# Scripts de la base de datos (se comparten por privado, no en el repo)
+CarenciaApi/CarenciaAPi/Database/
