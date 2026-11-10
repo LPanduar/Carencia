@@ -31,6 +31,8 @@ import androidx.navigation.navArgument
 import com.akm.carencia.ui.PedirPermisosIniciales
 import com.akm.carencia.ui.componentes.BarraNavegacion
 import com.akm.carencia.ui.componentes.Pestana
+import androidx.compose.runtime.collectAsState
+import com.akm.carencia.ui.pantallas.AdminContrasenaScreen
 import com.akm.carencia.ui.pantallas.AdminFotoScreen
 import com.akm.carencia.ui.pantallas.AdminLoginScreen
 import com.akm.carencia.ui.pantallas.AdminPanelScreen
@@ -57,6 +59,7 @@ sealed class Destino(val ruta: String) {
     data object AdminLogin : Destino("admin_login")
     data object AdminPanel : Destino("admin_panel")
     data object AdminFoto : Destino("admin_foto")
+    data object AdminContrasena : Destino("admin_contrasena")
     data class NivelDetalle(val id: Int) : Destino("nivel/$id")
     data class NovedadDetalle(val id: Int) : Destino("novedad/$id")
     data class NovedadForm(val id: Int = 0) : Destino("novedad_form/$id") // 0 = nueva
@@ -183,8 +186,21 @@ fun AppNavegacion(destinoPendiente: Destino?, onDestinoAtendido: () -> Unit) {
             composable(Destino.AdminFoto.ruta) {
                 AdminFotoScreen(onListo = { nav.popBackStack() })
             }
-            composable(Destino.AdminPanel.ruta) {
+            composable(Destino.AdminContrasena.ruta) {
+                AdminContrasenaScreen(
+                    onListo = { mensaje ->
+                        nav.previousBackStackEntry?.savedStateHandle?.set("aviso", mensaje)
+                        nav.popBackStack()
+                    },
+                    onVolver = { nav.popBackStack() }
+                )
+            }
+            composable(Destino.AdminPanel.ruta) { entrada ->
+                val aviso by entrada.savedStateHandle.getStateFlow<String?>("aviso", null).collectAsState()
                 AdminPanelScreen(
+                    avisoExterno = aviso,
+                    onAvisoMostrado = { entrada.savedStateHandle["aviso"] = null },
+                    onContrasena = { nav.ir(Destino.AdminContrasena) },
                     onVolver = { nav.popBackStack() },
                     onPublicar = { nav.ir(Destino.NovedadForm()) },
                     onSubirFoto = { nav.ir(Destino.AdminFoto) },

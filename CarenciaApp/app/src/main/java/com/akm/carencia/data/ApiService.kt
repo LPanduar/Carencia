@@ -21,6 +21,9 @@ interface ApiService {
     @POST("api/Usuario/login-admin")
     suspend fun loginAdmin(@Body body: LoginRequest): Response<ApiResponse<LoginResponse>>
 
+    @PUT("api/Usuario/contrasena")
+    suspend fun cambiarContrasena(@Body body: CambiarContrasenaRequest): Response<ApiResponse<Boolean>>
+
     @GET("api/Usuario/yo")
     suspend fun yo(): Response<ApiResponse<Usuario>>
 

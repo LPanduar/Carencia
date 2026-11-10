@@ -23,6 +23,13 @@ namespace Domain.Dtos
         public Usuario Usuario { get; set; } = new();
     }
 
+    // PUT api/Usuario/contrasena: el admin cambia su propia contraseña
+    public class CambiarContrasenaDto
+    {
+        [Required] public string Actual { get; set; } = string.Empty;
+        [Required, MinLength(8, ErrorMessage = "La nueva contraseña debe tener al menos 8 caracteres")] public string Nueva { get; set; } = string.Empty;
+    }
+
     // PUT api/Usuario/{id} (sólo Admin): cambia nombre, estatus o rol
     public class UsuarioUpdateDto
     {

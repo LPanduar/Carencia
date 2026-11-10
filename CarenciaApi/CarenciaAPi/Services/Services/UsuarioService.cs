@@ -68,6 +68,26 @@ namespace CarenciaAPi.Services.Services
             return login;
         }
 
+        // Verifica la contraseña actual contra el hash guardado y guarda la nueva hasheada
+        public async Task<Response<bool>> CambiarContrasena(int id, CambiarContrasenaDto request)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var usuario = await db.QueryFirstOrDefaultAsync<Usuario>(
+                "spUsuarioById", new { PkUsuario = id }, commandType: CommandType.StoredProcedure)
+                ?? throw new KeyNotFoundException("No se encontró el usuario");
+
+            if (_passwordHasher.VerifyHashedPassword(usuario, usuario.Password, request.Actual) == PasswordVerificationResult.Failed)
+                throw new InvalidOperationException("La contraseña actual no es correcta");
+            if (request.Actual == request.Nueva)
+                throw new InvalidOperationException("La nueva contraseña debe ser diferente a la actual");
+
+            await db.ExecuteScalarAsync<int>(
+                "spUsuarioCambiarPassword",
+                new { PkUsuario = id, Password = _passwordHasher.HashPassword(usuario, request.Nueva) },
+                commandType: CommandType.StoredProcedure);
+            return new Response<bool>(true, "Contraseña actualizada");
+        }
+
         public async Task<Response<List<Usuario>>> Obtener()
         {
             using var db = new SqlConnection(_connectionString);
