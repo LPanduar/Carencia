@@ -1,7 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
+
+// Firma del APK de producción: keystore.properties vive SÓLO en tu PC (está en .gitignore)
+val firma = Properties().apply {
+    val archivo = rootProject.file("keystore.properties")
+    if (archivo.exists()) archivo.inputStream().use { load(it) }
+}
+
+// URL pública de la API (MonsterASP). Se cambia en gradle.properties -> carencia.apiUrl
+val apiProduccion = (project.findProperty("carencia.apiUrl") as String?) ?: "https://TU-SITIO.runasp.net/"
 
 android {
     namespace = "com.akm.carencia"
@@ -17,15 +28,30 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 
-        // URL de CarenciaAPI.
-        //  - Emulador: 10.0.2.2 apunta al "localhost" de tu PC.
-        //  - Celular físico: cambia por la IP de tu PC en la red (ej. http://192.168.1.50:5101/)
-        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:5101/\"")
+    signingConfigs {
+        create("produccion") {
+            if (firma.isNotEmpty()) {
+                storeFile = rootProject.file(firma.getProperty("storeFile"))
+                storePassword = firma.getProperty("storePassword")
+                keyAlias = firma.getProperty("keyAlias")
+                keyPassword = firma.getProperty("keyPassword")
+            }
+        }
     }
 
     buildTypes {
+        debug {
+            // Desarrollo: API corriendo en tu PC.
+            //  - Emulador: 10.0.2.2 apunta al "localhost" de tu PC.
+            //  - Celular físico en tu red: cambia por la IP de tu PC (ej. http://192.168.1.50:5101/)
+            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:5101/\"")
+        }
         release {
+            // Producción: API publicada en internet (HTTPS)
+            buildConfigField("String", "API_BASE_URL", "\"$apiProduccion\"")
+            if (firma.isNotEmpty()) signingConfig = signingConfigs.getByName("produccion")
             optimization {
                 enable = true
                 packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")

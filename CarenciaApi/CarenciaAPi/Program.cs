@@ -117,13 +117,20 @@ var app = builder.Build();
 
 app.UseManejoDeErrores();
 
-if (app.Environment.IsDevelopment())
+// Swagger: siempre en desarrollo; en producción sólo si Swagger__Habilitado=true (útil para la demo)
+if (app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Swagger:Habilitado"))
 {
     app.UseSwagger();    // /swagger/v1/swagger.json
     app.UseSwaggerUI();  // interfaz en /swagger
 }
 
-// Sin redirección a HTTPS: el emulador de Android consume la API por http://10.0.2.2:5101
+if (!app.Environment.IsDevelopment())
+{
+    // En el hosting todo va por HTTPS. En desarrollo no, porque el emulador usa http://10.0.2.2:5101
+    app.UseHsts();
+    app.UseHttpsRedirection();
+}
+
 app.UseStaticFiles();    // wwwroot/img (oficiales) y wwwroot/uploads (subidas)
 app.UseAuthentication();
 app.UseAuthorization();

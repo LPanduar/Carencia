@@ -24,9 +24,10 @@ App móvil del videojuego **Carencia**: un joven de 17 años busca a su hermana,
 ## Cómo correrlo
 
 ### 1. Base de datos
-Ejecuta `CarenciaApi/CarenciaAPi/Database/CarenciaDB.sql` en SQL Server (SSMS → F5).
-Crea la base `CarenciaDB` con los datos iniciales y el usuario administrador `admin`
-(la contraseña inicial se comparte por privado dentro del equipo).
+En SQL Server (SSMS → F5):
+1. `CarenciaApi/CarenciaAPi/Database/00_CrearBaseLocal.sql` → crea la base `CarenciaDB`.
+2. `CarenciaApi/CarenciaAPi/Database/CarenciaDB.sql` **dentro de `CarenciaDB`** → tablas, datos iniciales
+   y el usuario administrador `admin` (la contraseña inicial se comparte por privado dentro del equipo).
 
 ### 2. API
 La **cadena de conexión** y la **clave del JWT** no están en el repositorio.
@@ -45,10 +46,32 @@ Swagger: <http://localhost:5101/swagger>
 (en producción van en las variables de entorno `ConnectionStrings__DefaultConnection` y `Jwt__Key`).
 
 ### 3. App Android
-Abre `CarenciaApp` en Android Studio y ejecuta.
-- Emulador: usa `http://10.0.2.2:5101/` (ya configurado).
-- Celular físico: cambia `API_BASE_URL` en `app/build.gradle.kts` por la IP de tu PC.
+Abre `CarenciaApp` en Android Studio y ejecuta (variante **debug**).
+- Emulador: usa `http://10.0.2.2:5101/` (ya configurado en el `buildType` debug).
+- Celular físico en tu red: cambia la URL del `buildType` debug en `app/build.gradle.kts` por la IP de tu PC.
 - Android 17+: acepta el permiso **"Dispositivos cercanos"** (acceso a la red local).
+
+## Producción (MonsterASP.NET)
+
+### API + base de datos
+1. En el panel de MonsterASP crea un **sitio web** (te da una URL `https://xxxx.runasp.net`) y una **base de datos MSSQL**.
+2. Conéctate a esa base con SSMS (datos del panel) y ejecuta **sólo** `Database/CarenciaDB.sql`.
+3. En el sitio → **Environment variables**, agrega (nunca en archivos del repo):
+
+   | Variable | Valor |
+   |---|---|
+   | `ConnectionStrings__DefaultConnection` | La cadena de conexión que te da el panel |
+   | `Jwt__Key` | Una clave aleatoria de 64+ caracteres (distinta a la de desarrollo) |
+   | `Swagger__Habilitado` | `true` si quieres Swagger en línea para la demo (opcional) |
+
+4. Descarga el **perfil de publicación (Web Deploy)** del panel y en Visual Studio:
+   clic derecho a `CarenciaAPi` → **Publicar** → **Importar perfil** → **Publicar**.
+5. Entra a la app con `admin` y **cambia la contraseña** desde el panel de administración.
+
+### APK de producción
+1. Pon la URL del sitio en `CarenciaApp/gradle.properties` → `carencia.apiUrl=https://xxxx.runasp.net/`.
+2. La firma se lee de `CarenciaApp/keystore.properties` + `carencia-release.jks` (sólo en la PC de quien publica; **no se suben**).
+3. `./gradlew :app:assembleRelease` → `app/build/outputs/apk/release/app-release.apk`.
 
 ## Flujo de trabajo (Git Flow)
 

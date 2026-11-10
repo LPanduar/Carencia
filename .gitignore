@@ -6,3 +6,12 @@ Thumbs.db
 .idea/
 *.log
 secrets.json
+
+# Firma de Android y perfiles de publicación (contienen contraseñas)
+keystore.properties
+*.jks
+*.keystore
+*.publishsettings
+*.pubxml
+*.pubxml.user
+appsettings.Production.json

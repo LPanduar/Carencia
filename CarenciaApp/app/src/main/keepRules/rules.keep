@@ -10,3 +10,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+# ---- Carencia ----
+# Gson lee/escribe los modelos por reflexión: conservar sus campos y los genéricos (TypeToken)
+-keepattributes Signature, *Annotation*, InnerClasses, EnclosingMethod
+-keep class com.akm.carencia.data.** { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
