@@ -1,0 +1,6 @@
+@CarenciaAPi_HostAddress = http://localhost:5101
+
+GET {{CarenciaAPi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

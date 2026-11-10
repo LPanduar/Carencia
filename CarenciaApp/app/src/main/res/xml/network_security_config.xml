@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- La API de desarrollo corre en HTTP (sin certificado). Se permite texto plano
+     sólo para el emulador y redes locales; en producción usar HTTPS. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
