@@ -34,6 +34,8 @@ import com.akm.carencia.ui.componentes.Pestana
 import androidx.compose.runtime.collectAsState
 import com.akm.carencia.ui.pantallas.AdminContrasenaScreen
 import com.akm.carencia.ui.pantallas.AdminFotoScreen
+import com.akm.carencia.ui.pantallas.AdminInicioScreen
+import com.akm.carencia.ui.pantallas.PersonajeFormScreen
 import com.akm.carencia.ui.pantallas.AdminLoginScreen
 import com.akm.carencia.ui.pantallas.AdminPanelScreen
 import com.akm.carencia.ui.pantallas.CamaraScreen
@@ -60,6 +62,8 @@ sealed class Destino(val ruta: String) {
     data object AdminPanel : Destino("admin_panel")
     data object AdminFoto : Destino("admin_foto")
     data object AdminContrasena : Destino("admin_contrasena")
+    data object AdminInicio : Destino("admin_inicio")
+    data class PersonajeForm(val id: Int = 0) : Destino("personaje_form/$id") // 0 = nuevo
     data class NivelDetalle(val id: Int) : Destino("nivel/$id")
     data class NovedadDetalle(val id: Int) : Destino("novedad/$id")
     data class NovedadForm(val id: Int = 0) : Destino("novedad_form/$id") // 0 = nueva
@@ -183,6 +187,20 @@ fun AppNavegacion(destinoPendiente: Destino?, onDestinoAtendido: () -> Unit) {
                     onVolver = { nav.popBackStack() }
                 )
             }
+            composable(Destino.AdminInicio.ruta) {
+                AdminInicioScreen(
+                    onVolver = { nav.popBackStack() },
+                    onPersonaje = { nav.ir(Destino.PersonajeForm(it)) }
+                )
+            }
+            composable(
+                "personaje_form/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) { e ->
+                PersonajeFormScreen(
+                    id = e.arguments?.getInt("id") ?: 0,
+                    onListo = { nav.popBackStack() }
+                )
+            }
             composable(Destino.AdminFoto.ruta) {
                 AdminFotoScreen(onListo = { nav.popBackStack() })
             }
@@ -204,6 +222,7 @@ fun AppNavegacion(destinoPendiente: Destino?, onDestinoAtendido: () -> Unit) {
                     onVolver = { nav.popBackStack() },
                     onPublicar = { nav.ir(Destino.NovedadForm()) },
                     onSubirFoto = { nav.ir(Destino.AdminFoto) },
+                    onEditarInicio = { nav.ir(Destino.AdminInicio) },
                     onEditar = { nav.ir(Destino.NovedadForm(it)) },
                     onVer = { nav.ir(Destino.NovedadDetalle(it)) },
                     onSalir = {

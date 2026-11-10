@@ -185,6 +185,7 @@ fun AdminPanelScreen(
     onVolver: () -> Unit,
     onPublicar: () -> Unit,
     onSubirFoto: () -> Unit,
+    onEditarInicio: () -> Unit,
     onEditar: (Int) -> Unit,
     onVer: (Int) -> Unit,
     onSalir: () -> Unit,
@@ -231,7 +232,7 @@ fun AdminPanelScreen(
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Etiqueta("Administrador", acento = true)
                     Text("Panel", style = T.barrio(44))
-                    Text("Hola, ${sesion?.nombre ?: ""}. Publica novedades y administra la galería oficial; los jugadores lo ven al instante.", style = T.Cuerpo)
+                    Text("Hola, ${sesion?.nombre ?: ""}. Publica novedades, edita el inicio y administra la galería oficial; los jugadores lo ven al instante.", style = T.Cuerpo)
                 }
             }
             vm.stats?.let { s ->
@@ -249,6 +250,7 @@ fun AdminPanelScreen(
                     Boton("+ Foto galería", Modifier.weight(1f), secundario = true, onClick = onSubirFoto)
                 }
             }
+            item { Boton("Editar inicio", Modifier.fillMaxWidth(), secundario = true, onClick = onEditarInicio) }
             item { Text("Novedades publicadas", style = T.elite(20), modifier = Modifier.padding(top = 10.dp)) }
 
             when (val e = vm.novedades) {

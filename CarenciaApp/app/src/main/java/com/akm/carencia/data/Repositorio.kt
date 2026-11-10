@@ -114,6 +114,44 @@ class Repositorio(private val sesion: SesionManager) {
         }.getOrNull()
     }
 
+    // ----- Inicio -----
+    suspend fun inicio() = llamar { api.inicio() }
+
+    suspend fun actualizarDescripcion(texto: String) =
+        llamar { api.actualizarDescripcion(DescripcionRequest(texto.trim())) }
+
+    suspend fun crearEtiqueta(tipo: String, texto: String) =
+        llamar { api.crearEtiqueta(EtiquetaCreateRequest(tipo, texto.trim())) }
+
+    suspend fun actualizarEtiqueta(id: Int, texto: String) =
+        llamar { api.actualizarEtiqueta(id, TextoRequest(texto.trim())) }
+
+    suspend fun eliminarEtiqueta(id: Int) = llamar { api.eliminarEtiqueta(id) }
+
+    suspend fun crearPersonaje(nombre: String, rol: String, descripcion: String, rasgos: String, imagen: File?) =
+        llamar {
+            api.crearPersonaje(
+                nombre.texto(), rol.texto(), descripcion.texto(),
+                rasgos.ifBlank { null }?.texto(), imagen?.parte()
+            )
+        }
+
+    suspend fun actualizarPersonaje(id: Int, body: PersonajeUpdateRequest) =
+        llamar { api.actualizarPersonaje(id, body) }
+
+    suspend fun cambiarImagenPersonaje(id: Int, imagen: File) =
+        llamar { api.cambiarImagenPersonaje(id, imagen.parte()) }
+
+    suspend fun eliminarPersonaje(id: Int) = llamar { api.eliminarPersonaje(id) }
+
+    suspend fun crearAcerca(seccion: String, texto: String) =
+        llamar { api.crearAcerca(AcercaCreateRequest(seccion, texto.trim())) }
+
+    suspend fun actualizarAcerca(id: Int, texto: String) =
+        llamar { api.actualizarAcerca(id, TextoRequest(texto.trim())) }
+
+    suspend fun eliminarAcerca(id: Int) = llamar { api.eliminarAcerca(id) }
+
     // ----- Estadísticas -----
     suspend fun estadisticas() = llamar { api.estadisticas() }
 

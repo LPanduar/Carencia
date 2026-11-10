@@ -112,6 +112,7 @@ builder.Services.AddTransient<INivelService, NivelService>();
 builder.Services.AddTransient<INovedadService, NovedadService>();
 builder.Services.AddTransient<ICapturaService, CapturaService>();
 builder.Services.AddTransient<IEstadisticaService, EstadisticaService>();
+builder.Services.AddTransient<IInicioService, InicioService>();
 
 var app = builder.Build();
 

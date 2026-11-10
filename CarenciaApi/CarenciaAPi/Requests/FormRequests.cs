@@ -21,6 +21,16 @@ namespace CarenciaAPi.Requests
         [Required] public IFormFile Imagen { get; set; } = null!;
     }
 
+    // multipart/form-data: POST api/Inicio/personaje (sólo Admin)
+    public class PersonajeCreateRequest
+    {
+        [Required, MaxLength(60)] public string Nombre { get; set; } = string.Empty;
+        [Required, MaxLength(40)] public string Rol { get; set; } = string.Empty;
+        [Required, MaxLength(500)] public string Descripcion { get; set; } = string.Empty;
+        [MaxLength(200)] public string? Rasgos { get; set; }
+        public IFormFile? Imagen { get; set; }
+    }
+
     // multipart/form-data: PATCH api/Novedad/{id}/imagen
     public class ImagenRequest
     {
