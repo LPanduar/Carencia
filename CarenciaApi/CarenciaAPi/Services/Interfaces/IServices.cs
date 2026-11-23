@@ -44,6 +44,25 @@ namespace CarenciaAPi.Services.Interfaces
         Task<Response<bool>> Eliminar(int id);
     }
 
+    public interface IInicioService
+    {
+        Task<Response<Inicio>> Obtener();
+        Task<Response<string>> ActualizarDescripcion(string descripcion);
+
+        Task<Response<InicioEtiqueta>> CrearEtiqueta(InicioEtiquetaCreateDto request);
+        Task<Response<InicioEtiqueta>> ActualizarEtiqueta(int id, string texto);
+        Task<Response<bool>> EliminarEtiqueta(int id);
+
+        Task<Response<Personaje>> CrearPersonaje(string nombre, string rol, string descripcion, string? rasgos, IFormFile? imagen);
+        Task<Response<Personaje>> ActualizarPersonaje(int id, PersonajeUpdateDto request);
+        Task<Response<Personaje>> CambiarImagenPersonaje(int id, IFormFile imagen);
+        Task<Response<bool>> EliminarPersonaje(int id);
+
+        Task<Response<AcercaItem>> CrearAcerca(AcercaItemCreateDto request);
+        Task<Response<AcercaItem>> ActualizarAcerca(int id, string texto);
+        Task<Response<bool>> EliminarAcerca(int id);
+    }
+
     public interface IEstadisticaService
     {
         Task<Response<Estadistica>> Obtener();

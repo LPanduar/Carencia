@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- La API de desarrollo corre en HTTP (sin certificado). Se permite texto plano
-     sólo para el emulador y redes locales; en producción usar HTTPS. -->
+<!-- Producción: sólo HTTPS (la API publicada en MonsterASP tiene certificado).
+     En debug se usa app/src/debug/res/xml/network_security_config.xml, que permite HTTP local. -->
 <network-security-config>
-    <base-config cleartextTrafficPermitted="true" />
+    <base-config cleartextTrafficPermitted="false" />
 </network-security-config>

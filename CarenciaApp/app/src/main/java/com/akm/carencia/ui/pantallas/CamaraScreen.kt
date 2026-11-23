@@ -225,36 +225,46 @@ private fun Guardar(foto: Bitmap, onRepetir: () -> Unit, onGuardada: () -> Unit)
     var subiendo by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
+    // Los botones van FUERA del scroll y pegados abajo: al abrir el teclado (imePadding)
+    // quedan justo encima de él y siempre se ven; sólo la foto y el campo se desplazan.
     Column(
         Modifier
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
             .imePadding()
-            .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(64.dp))
-        Image(
-            foto.asImageBitmap(), "Tu captura",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth(0.78f)
-                .aspectRatio(0.72f)
-                .clip(FormaEspejo)
-                .border(1.5.dp, C.Crema.copy(alpha = 0.14f), FormaEspejo)
-        )
-        Spacer(Modifier.height(24.dp))
-        CampoTexto(titulo, { titulo = it.take(100) }, "Ponle un título…")
-        Spacer(Modifier.height(10.dp))
-        Text("Se guardará en este teléfono, en Galería → Mis fotos.", style = T.elite(13, C.Gris))
-        error?.let {
+        Column(
+            Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier.height(64.dp))
+            Image(
+                foto.asImageBitmap(), "Tu captura",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth(0.78f)
+                    .aspectRatio(0.72f)
+                    .clip(FormaEspejo)
+                    .border(1.5.dp, C.Crema.copy(alpha = 0.14f), FormaEspejo)
+            )
+            Spacer(Modifier.height(24.dp))
+            CampoTexto(titulo, { titulo = it.take(100) }, "Ponle un título…")
+            Spacer(Modifier.height(10.dp))
+            Text("Se guardará en este teléfono, en Galería → Mis fotos.", style = T.elite(13, C.Gris))
+            error?.let {
+                Spacer(Modifier.height(12.dp))
+                Text(it, style = T.elite(14, C.RojoClaro))
+            }
             Spacer(Modifier.height(12.dp))
-            Text(it, style = T.elite(14, C.RojoClaro))
         }
-        Spacer(Modifier.height(20.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Spacer(Modifier.height(12.dp))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Boton("Repetir", Modifier.weight(1f), secundario = true, habilitado = !subiendo, onClick = onRepetir)
             Boton(
                 "Guardar", Modifier.weight(1f), cargando = subiendo, habilitado = titulo.isNotBlank()
@@ -272,7 +282,7 @@ private fun Guardar(foto: Bitmap, onRepetir: () -> Unit, onGuardada: () -> Unit)
                 }
             }
         }
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(16.dp))
     }
 }
 

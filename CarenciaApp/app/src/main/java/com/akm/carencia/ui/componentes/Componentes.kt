@@ -133,9 +133,9 @@ fun Boton(
 ) {
     Box(
         modifier
+            .alpha(if (habilitado) 1f else 0.5f) // antes del fondo: atenúa TODO el botón, no sólo el texto
             .clip(RoundedCornerShape(14.dp))
             .background(if (secundario) C.Chip else C.Crema)
-            .alpha(if (habilitado) 1f else 0.5f)
             .clickable(enabled = habilitado && !cargando, onClick = onClick)
             .padding(horizontal = if (compacto) 8.dp else 22.dp, vertical = if (compacto) 13.dp else 16.dp),
         contentAlignment = Alignment.Center

@@ -6,3 +6,15 @@ Thumbs.db
 .idea/
 *.log
 secrets.json
+
+# Firma de Android y perfiles de publicación (contienen contraseñas)
+keystore.properties
+*.jks
+*.keystore
+*.publishsettings
+*.pubxml
+*.pubxml.user
+appsettings.Production.json
+
+# Scripts de la base de datos (se comparten por privado, no en el repo)
+CarenciaApi/CarenciaAPi/Database/

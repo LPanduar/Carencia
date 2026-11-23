@@ -75,6 +75,34 @@ data class Captura(
     val fecha: String
 )
 
+// ---------- Inicio (editable por el admin) ----------
+data class Inicio(
+    val descripcion: String,
+    val etiquetas: List<InicioEtiqueta>,
+    val personajes: List<Personaje>,
+    val acerca: List<AcercaItem>
+) {
+    val info get() = etiquetas.filter { it.tipo == "Info" }
+    val generos get() = etiquetas.filter { it.tipo == "Genero" }
+    fun seccion(nombre: String) = acerca.filter { it.seccion == nombre }
+}
+
+data class InicioEtiqueta(val pkInicioEtiqueta: Int, val tipo: String, val texto: String, val orden: Int)
+
+data class Personaje(
+    val pkPersonaje: Int,
+    val nombre: String,
+    val rol: String,
+    val descripcion: String,
+    val rasgos: String?,
+    val imagenUrl: String?,
+    val orden: Int
+) {
+    val listaRasgos get() = rasgos.orEmpty().split(",").map { it.trim() }.filter { it.isNotEmpty() }
+}
+
+data class AcercaItem(val pkAcercaItem: Int, val seccion: String, val texto: String, val orden: Int)
+
 data class ConteoCategoria(val categoria: String, val total: Int)
 data class UsuarioTop(val nombre: String, val total: Int)
 
@@ -103,7 +131,14 @@ data class NovedadUpdateRequest(
 data class DestacarRequest(val destacada: Boolean)
 data class CapturaUpdateRequest(val titulo: String, val categoria: String)
 
+data class DescripcionRequest(val descripcion: String)
+data class EtiquetaCreateRequest(val tipo: String, val texto: String)
+data class AcercaCreateRequest(val seccion: String, val texto: String)
+data class TextoRequest(val texto: String)
+data class PersonajeUpdateRequest(val nombre: String, val rol: String, val descripcion: String, val rasgos: String?)
+
 object Categorias {
     val Novedad = listOf("Interfaz", "Mecánicas", "Arte", "Anuncio")
     val Captura = listOf("Escenarios", "Personajes", "Arte")
+    val Acerca = listOf("Mecánicas", "Controles", "Tecnologías")
 }
